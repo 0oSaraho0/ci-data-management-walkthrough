@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="light-blue-text text-darken-4 center-align">Categories</h3>
+
+<!--Here we are starting by making a button to like the pages togehter This will take us to the form 
+add a new category.  To make it responsive we use the materialize grid which has a culumn that spans
+12 spaces and is center aligned  within the link we add a button with the materalize button large class
+which is larger than deafult.  the link is add category with an icon the link has the url for with double 
+curly braces becasue it is a local file-->
+<div class="row">
+    <div class="col s12 center-align">
+        <a href="{{ url_for('add_category') }}" class="btn-large light-blue darken-2"> 
+            Add Category <i class="fas fa-plus-square right"></i>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

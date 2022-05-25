@@ -1,0 +1,12 @@
+<!-- this file is were we display any tasks that will be stored within our database later
+We will use the extends  block which will extend our base html template
+This means that by estending the template anything created onteh base template will display
+here as well including navbar and footer.  Then we inject anything from this tasks  template
+into the 'content' block element making sure to close the block end as well-->
+
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="light-blue-text text-darken-4 center-align">Tasks</h3>
+
+{% endblock %}
