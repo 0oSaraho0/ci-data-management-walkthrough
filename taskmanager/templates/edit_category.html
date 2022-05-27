@@ -1,0 +1,64 @@
+<!--
+Now that we have the ability to create and retrieve categories, we need to be able to update a category as well.
+The first thing we need to do is make a duplicate copy of the 'add_category' template, and let's
+rename this to 'edit_category.html' instead.
+Anywhere that you see 'Add Category' on this template, go ahead and replace that with 'Edit Category',
+which should be a total of three times, plus a quick update to the icon.
+The form is almost complete, but if you notice, the form's action attribute is pointing to
+a new function called 'edit_category', which we haven't created yet.-->
+
+{% extends "base.html" %}
+{% block content %}
+
+<!--The really fantastic thing with any Flask error, is that it will always tell you exactly
+which file and line number is causing the specific error.
+Normally, this can be found towards the bottom of the error lines, and you want to look for
+the code in the blue rows that matches your own code.
+As you can see here, we're calling the URL for the edit_category function, which is listed
+on the edit_category.html template, from line 30.
+Essentially what happened is once we added the primary key of ID into our app.route function,
+it will now always expect this for any link that calls this function.
+Let's go back to the edit_category template, and sure enough on line 30 we have the url_for method.
+All we need to do is provide the same exact argument of 'category_id' like we did on the href for the Edit button.
+Again, separate the argument with a comma after the single-quotes, and the variable
+name we assigned was 'category_id'.
+This will be set to 'category.id' as well for the value.-->
+
+<h3 class="light-blue-text text-darken-4 center-align">Edit Category</h3>
+
+<div class="row card-panel grey lighten-5">
+    <form class="col s12" method="POST" action="{{ url_for('edit_category', category_id=category.id) }}">
+
+        <!--Even though we added this to the URL now and saved the file, you will still get an error
+saying "'category' is undefined".
+You might be wondering where this 'category' value comes from, since this isn't part of
+a for-loop like on the categories template.
+That's the next step, so go ahead and return to your routes.py file.-->
+
+        <!--Category Name-->
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="fas fa-folder-open pefix light-blue-text text-darken-4"></i>
+                <!--Within the edit_category template, now that we have the category retrieved from the database,
+                we need to add its value into the input field.
+                This is a variable, so we need to wrap it inside of double curly-brackets, and then
+                we can target the 'category_name' from this variable of 'category' using dot-notation again.
+                If you save those changes, and then reload the page and click on any of the Edit buttons
+                now, it should pre-fill the form with the existing value from our database.-->
+                <input id="category_name" name="category_name" value="{{ category.category_name }}"minlength="3" maxlength="25" type="text" class="validate" required>
+                <label for="category_name">Category Name</label>
+            </div>
+        </div>
+        <!--Submit Button-->
+        <div class="row">
+            <div class="col s12 center-align">
+                <button type="submit" class="btn-large light-blue darken-1">
+                    Edit Category <i class="fas fa-edit right"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+        
+
+{% endblock %}
