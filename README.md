@@ -1,4 +1,4 @@
-# Lesson 1
+# Lesson 1 Project Introduction and the Materialize Framework
 
 Hi, and welcome to the Relational Database Management System mini-project.
 My name is Tim Nelson, and in this project, we are going to create a task manager application.
@@ -50,7 +50,7 @@ This was just a small sample of components that Materialize provides, so take a 
 to get familiar with their site, and play around with the various elements to see how they work.
 Now that we've seen a sneak peek of what's to come, let's dive right in and start building our Task Manager application.
 
-# Lesson 2
+# Lesson 2 Putting the Basics into Place
 
 This video assumes that you are using our recommended development environment, and have
 already created your new repository.
@@ -147,7 +147,8 @@ We've learned how to set up a basic Flask application using the Flask-SQLAlchemy
 In our next video, we'll start setting up the actual database schema by defining our
 models, so for now, go ahead and push your changes to GitHub, and I'll see you in the next lesson.
 
-# Lesson 3
+# Lesson 3 Creating the Database
+
 Now that we have the basic Flask application set up and running, it's time to start creating
 our database schema by defining our models.
 We'll start by creating a new file called models.py within our taskmanager package.
@@ -258,7 +259,7 @@ these instructions listed on the screen.
 I'll see you in the next lesson, where we are going to start creating some of the front-end
 templates with the Materialize CSS framework!
 
-# Lesson 4
+# Lesson 4 Template Inheritance
 
 In the last video, we managed to get our database schema created and migrated to Postgres.
 Before we can do any data manipulation using CRUD functionality, we need some sort of front-end
@@ -392,7 +393,7 @@ that uses Template Inheritance to extend from the base file.
 In the next lesson, we are going to start working with the database, and performing some CRUD functionality.
 For now, go ahead and push your code to GitHub, and I'll see you on the next video.
 
-# Lesson 5
+# Lesson 5 Adding Categories
 
 In the previous video, we used template inheritance to connect our tasks file with our base template,
 and set up the main layout using Materialize.
@@ -513,7 +514,7 @@ Instead of using the CLI, in the next video, we are going to learn how to extrac
 from the database, and display it to our users.
 Go ahead and push your code to GitHub, and I'll see you on the next lesson.
 
-# Lesson 6
+# Lesson 6 Viewing Categories
 
 In the previous video, we managed to add a new category into our database, which is just
 one part of performing CRUD functionality.
@@ -625,7 +626,6 @@ the category name by clicking the 'Edit' button.
 For now though, make sure to push your changes to GitHub, and I'll see you on the next video.
 
 # Lesson 7 Updating Categories
-
 
 Now that we have the ability to create and retrieve categories, we need to be able to update a category as well.
 The first thing we need to do is make a duplicate copy of the 'add_category' template, and let's
@@ -1098,3 +1098,97 @@ In the next lesson, we are going to allow users to retrieve tasks from the datab
 but using collapsibles instead of Materialize cards.
 Feel free to add another task to the database if you'd like, and when you're ready, go ahead
 and push your code to GitHub, and I'll see you on the next lesson.
+
+# lesson 11 Updating tasks
+
+Our CRUD functionality is almost complete, so in this video, we will focus on allowing users to Update tasks on the database.
+The method to update a task is pretty much the same as updating a category, so I'm going
+to give you a challenge to test yourself.
+See if you can build the functionality using the knowledge you've learned so far.
+Give yourself about 10-15 minutes to complete this challenge, but if you find yourself stuck
+with anything, I'm going to teach you how in this video.
+Pause the video now.
+Welcome back, and I hope you were able to get the Update functionality working on your project.
+If not, don't worry, we'll go over that now.
+The easiest way to generate a form that allows users to update data, is to make a copy of
+the original form which creates a new task.
+Right-click the add_task.html file, click on 'Copy', then right-click on the 'templates'
+directory, and finally, select 'Paste' to make a duplicate copy.
+Rename the file to edit_task.html, and now we can start updating the text to read 'Edit Task' within the file itself.
+In order to render the template, we need to create a new function inside of the routes.py file.
+Let's copy the entire function for adding a new task, and paste it below, giving it a unique name of 'edit_task'.
+The function needs to know which particular task we would like to edit, so we should include
+the task's ID in the app root URL, which is cast as an integer.
+Don't forget, we also need to pass that into the function itself as 'task_id'.
+If you recall from when we created the edit_category function, we used the 'get_or_404()' method,
+which queries the database using that task ID.
+Now, instead of using the Task model, we can simply update each column-header using dot-notation.
+We already have each field here, so we just need to adjust the formatting for Python to
+remove the original Task() model, and give it proper indentation.
+Do this for each field, adding 'task dot' in front of each column-header, such as 'task.task_name', or 'task.due_date'.
+It's important to do this for all fields, even if the user would only like to update one of them.
+If we don't include all fields, and the user only updates the task_name for example, then
+the other fields risk being deleted entirely.
+Since we are modifying the specific task here, we don't need to use session.add(), and only
+session.commit() is required for saving these changes.
+Finally, we just need to render our new template of 'edit_task.html', and along with the normal
+'categories' selection, we need to pass through the task itself.
+Next, open up the tasks.html template, because we need a method for users to click a button
+that opens up this template for editing.
+Within the 'collapsible-body' element, just underneath the task-description paragraph,
+let's add another paragraph tag.
+This one will contain a link, styled like a button, in exactly the same way we created the Edit button for each category.
+I'm going to copy that one from the categories.html template, and paste it within the paragraph tag here.
+Make sure to update any reference to 'category', so that it calls the appropriate function for editing our task instead.
+Copy the entire href, and then go back to the new 'edit_task' template, where we can
+then paste that into the form's action attribute.
+That way, once we've updated any field on the task, it will know which specific task
+to update within our database.
+Save all changes, and let's make sure that everything is loading so far.
+Start the application in your terminal if it isn't already running.
+Open up any of the collapsibles, and as you can see, we have a green Edit button that we can click on.
+If you notice, the URL here is pointing to the new function of 'edit_task', and it's
+recognizing the primary key of 'task.id' which will be updated on the database.
+However, it's not very intuitive right now, because all of the fields are blank, instead
+of showing us the existing values stored for this task.
+Let's go back to the 'edit_task' template, and start adding the existing values into their respective fields.
+For the task name, the value-attribute will simply point to the current 'task.task_name'.
+For the task description, since this is a 
+, we need to add the existing value
+between the opening and closing textarea tags.
+The due date is another input field, so we can use the value-attribute of 'task.due_date',
+however, we need to convert the date into a string to match our date format.
+To keep things consistent, just copy the date string from the tasks.html template, and paste
+it within the value, making sure to fix any single or double quotes as needed.
+Unfortunately, the final two fields aren't as simple as adding the value-attribute.
+For the 'is_urgent' toggle, we need to conditionally check to see if it's set to True, and if so, add the 'checked' attribute.
+Duplicate the input line by pressing "Shift + Alt + Down" on Windows, or "Shift + Option + Down" on Mac.
+One should be checked if it's True, so let's add some Jinja logic here.
+If task.is_urgent is True, then add this checked input field, otherwise, within the 'else' block, show the normal input field.
+Remember to close the {% endif %} block.
+For the 'category' selection, our current for-loop is building anfor each category in our database.
+Similar to the 'is_urgent' toggle, we need to conditionally check to see if the current
+iteration of categories matches the actual task category that we are updating.
+Again, duplicate this line, and if there is a match, then it should be the one with the 'selected' attribute.
+If the current category is equal to the actual task.category, we will have that be 'selected'.
+Otherwise, display the normalfield within the {% else %} block, making sure to close the {% endif %} block.
+That should be everything now sorted, so let's save the changes, and reload the live preview page.
+Select any of your tasks by clicking on the Edit button, and as you can see, all of the
+existing details about this task are now pre-populated into our form.
+The only issue we have now, is that the textarea for our task-description has a lot of whitespace
+before and after the actual content.
+Let's quickly go back to the file, and find the textarea.
+Jinja has several helper elements, and one of them is specifically designed for whitespace control.
+If we include a minus-symbol at the beginning and end of this variable, it will remove any whitespace.
+Alternatively, if you wanted to add whitespace, you would apply a plus-symbol only at the
+beginning of the variable, not the end.
+Once again, save the change, and reload the live preview.
+Wonderful, everything looks as it should, so go ahead and make some changes to your tasks.
+Make sure to test each field, including the inputs, textarea, urgent toggle, datepicker, and the dropdown selection.
+Click the Edit Task button once you're ready to submit those changes.
+That's perfect, the POST method on our function is successfully updating each of the fields accordingly.
+If you've only changed one of the elements, this is why it's important to have the function
+update them all, so that it retains the original value without being modified.
+Everything is behaving as we'd expect so far, and we're just about complete with building our CRUD functionality.
+In the next video, we will finish off CRUD by allowing users to delete tasks from the database.
+For now though, push your changes to GitHub, and I'll see you on the next lesson.

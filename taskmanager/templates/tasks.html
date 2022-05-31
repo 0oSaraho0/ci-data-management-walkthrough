@@ -31,6 +31,9 @@ into the 'content' block element making sure to close the block end as well-->
         <div class="collapsible-body">
             <strong>{{ task.category }}</strong>
             <p>{{ task.task_description}}</p>
+            <p>
+                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn green accent-4">Edit</a>
+            </p>
         </div>
     </li>
     {% endfor %}
