@@ -1,9 +1,3 @@
-<!-- this file is were we display any tasks that will be stored within our database later
-We will use the extends  block which will extend our base html template
-This means that by estending the template anything created onteh base template will display
-here as well including navbar and footer.  Then we inject anything from this tasks  template
-into the 'content' block element making sure to close the block end as well-->
-
 {% extends "base.html" %}
 {% block content %}
 
@@ -11,17 +5,16 @@ into the 'content' block element making sure to close the block end as well-->
 
 <div class="row">
     <div class="col s12 center-align">
-        <a href="{{ url_for('add_task') }}" class="btn-large light-blue darken-2"> 
-            Add Task <i     class="fas fa-plus-square right"></i>
+        <a href="{{ url_for('add_task') }}" class="btn-large light-blue darken-2">
+            Add Task <i class="fas fa-plus-square right"></i>
         </a>
-
     </div>
 </div>
 
 <ul class="collapsible">
     {% for task in tasks|sort(attribute="due_date") %}
     <li>
-        <div class="collapsible-header">
+        <div class="collapsible-header white-text light-blue darken-4">
             <i class="fas fa-caret-down"></i>
             <strong>{{ task.task_name }}</strong> : {{ task.due_date.strftime("%d %B, %Y") }}
             {% if task.is_urgent == True %}
@@ -30,7 +23,7 @@ into the 'content' block element making sure to close the block end as well-->
         </div>
         <div class="collapsible-body">
             <strong>{{ task.category }}</strong>
-            <p>{{ task.task_description}}</p>
+            <p>{{ task.task_description }}</p>
             <p>
                 <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn green accent-4">Edit</a>
                 <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn red">Delete</a>
