@@ -1192,3 +1192,186 @@ update them all, so that it retains the original value without being modified.
 Everything is behaving as we'd expect so far, and we're just about complete with building our CRUD functionality.
 In the next video, we will finish off CRUD by allowing users to delete tasks from the database.
 For now though, push your changes to GitHub, and I'll see you on the next lesson.
+
+# Lesson 12 Deleting tasks
+
+tart of transcript. Skip to the end.
+We've reached the final stage of our CRUD functionality, which allows users to Delete tasks from the database.
+Once again, the method to delete a task is almost identical to the way we deleted a category.
+For the last time on this mini-project, I'm going to give you a challenge to try and solve
+this one on your own, using the knowledge you've learned so far.
+Deleting a task is much easier than updating a task, so I'm confident you can figure this one out yourself.
+Go ahead and pause this video now.
+Welcome back for those of you who decided to challenge yourself.
+Let's jump right in and build the functionality for deleting tasks.
+First, we need a button that users can click in order to delete a task.
+I'll simply copy the Delete button from our categories template, and then paste it beneath
+the Edit button within our tasks.html template.
+Obviously we want to delete a task, so we need to alter the text from 'category' to 'task'.
+Save that file, and let's open the routes.py file in order to build that new function called 'delete_task'.
+Like I said, the delete functionality is quite similar to deleting a category, so let's copy that entire function above.
+Update every instance of 'category' to reflect 'task', which should be a total of 8 instances.
+When this function is called, it takes the 'task_id' variable, and tries to query the database to find that particular task.
+It will then remove the task using the .delete() method, and then commit those changes to our database.
+Finally, once the task is deleted, we can simply redirect the user back to the home page where our tasks are displayed.
+That's it, I told you it was much easier to accomplish, and I hope you managed to build this functionality yourself!
+Let's save everything, and run the app in the Terminal to test that it works perfectly.
+For demonstration purposes, I'm going to create a new fake task that we can delete.
+As you can see, after clicking the new task, the red delete button is visible.
+Now, the moment of truth, what happens when I click the Delete button?
+Wonderful, that's no longer displaying in our list of tasks, and we didn't get any error messages, so it's deleted successfully!
+In a real world scenario, you should ideally add some defensive programming, so that a
+user must first confirm whether or not they want to delete the task.
+Also, having user authentication is quite important, so that way only the user who created
+that task, should be able to delete that task.
+You will want your database protected, so that a user can't simply brute-force their way around your application.
+Currently, these app routes aren't protected, so any visitor to the site can add, edit,
+or delete any task or category, which is not secure.
+Let's step back a bit and have another look at our models.py file.
+If you recall, we created a relationship between our Category and Task models, using a 'backref' and the 'ondelete' cascade.
+Now that we have full CRUD functionality for both of these tables, let's see how that works together.
+Once again for demonstration purposes, I'm going to create a new Category called "Test",
+and two new tasks that use this new category.
+As you can see, for the category, they both use the new "Test" category.
+The reason we add the backref and delete cascade, has to do with the fact that if the "Test"
+category gets deleted, then we will show an error on these two Tasks for having invalid categories.
+However, once the backref and delete cascade are added, if we decide to delete the "Test"
+category, then it will perform a cascade effect and delete any task utilizing this category.
+I'll go ahead and click "Delete" on the "Test" category, and then navigate back to the Home page.
+Sure enough, both of our fake tasks have been deleted as well, due to the cascade effect.
+Perhaps something to consider when designing your defensive programming, is to advise users
+that all related tasks will also be deleted simultaneously.
+Congratulations for completing the mini-project, we now have full CRUD functionality on two tables within our database.
+The final step that we need to do is deploy our project to a hosting platform that can render Python files.
+Unfortunately, deploying to GitHub Pages won't work, since it can only handle front-end files
+such as HTML, CSS, and JavaScript.
+We'll discuss this more in the final video, so for now, go ahead and push your changes
+to GitHub, and I'll see you on the final lesson.
+
+# Lesson 13 Deploy to Heroku
+
+Before we can deploy our finished project online to a Heroku application, we need to
+set up some required files that Heroku needs in order to run the app.
+First, we need to tell Heroku which applications and dependencies are required to run our app,
+which must be in a file called 'requirements.txt'.
+By typing 'pip3 list', this will show us the installed packages we have on our workspace environment.
+We can simply 'freeze' these packages, and have the result output into a new file called 'requirements.txt'.
+pip3 freeze --local > requirements.txt
+Remember, whenever you add additional packages to your project, you must update the requirements.txt file for Heroku.
+Next, the Procfile is what Heroku looks for to know which file runs the app, and how to
+run it, so we'll use the echo command: "echo web: python run.py > Procfile".
+Make sure that the file starts with a capital 'P', and has no file extension.
+You should see the Heroku logo icon once that's created, which is a good indication that the file name is correct.
+Using the echo command can sometimes add a blank line at the bottom of the file, and
+this can cause problems when running our app on Heroku, so just delete that line and save the file.
+Once these two files are created, we need to push them to our GitHub repository.
+I'm going to add the requirements.txt file and commit that first.
+Then, I will add the Procfile to the staging area, and commit that next.
+Finally, we can simply push those to GitHub together.
+Let's head over to the Heroku website now, where you should already have created an account
+and application from one of our previous modules.
+As a reminder, Heroku allows us to have 5 apps by default, however, if you verify your
+account by adding card details, then you are permitted to have up to 100 apps at once.
+Navigate to the dashboard once logged in, and click on the button for creating a new app on your profile.
+Heroku apps must have a unique name, which generally use a 'dash' or 'hyphen' instead
+of spaces, and should use all lowercase letters.
+I'm going to call my app "flask-sqlalchemy-task-manager", which means that name is no longer available
+for you to use, so try something similar, perhaps including your name.
+Make sure to select the region closest to you, which is Europe for me here in Ireland,
+and then click "Create App".
+Due to the fact that our database is stored locally in Postgres on our workspace, Heroku cannot see this data.
+Depending on what data you're storing within your database, such as user accounts and personal
+information, it's recommended to not migrate your existing database to Heroku.
+Although it is possible, you could risk accidentally exposing confidential data on your GitHub account, if not done properly.
+What we need to do is create a new database that Heroku can host, which can be found on
+the "Resources" tab, underneath the "Add-ons" section.
+Search for "Heroku Postgres", which will provide us with various Plans to choose from.
+For our purposes, the free 'Hobby Dev' is perfectly suitable, but you can find out more
+details and monthly fees for the other plans on the Heroku Marketplace.
+Once the Postgres database has been attached to our app, click on the "Settings" tab, and
+scroll to the section called "Config Vars".
+Config Variables are the same thing as Environment Variables, which contain confidential key-value pairs.
+As you can see after revealing the config vars, our new Postgres database URL has been
+automatically applied for us, and is being hosted on Amazon AWS.
+If you recall from when we created our environment variables, we assigned a variable of "DB_URL".
+Please note, if you are using our recommended workspace environment, it actually comes with
+a variable of "DATABASE_URL" behind the scenes, which we cannot override.
+This is how you can easily distinguish between the two databases.
+"DB_URL" is for our local database when working in the IDE workspace, whereas "DATABASE_URL"
+is the assigned Postgres database on our deployed app within Heroku.
+They are two completely separate databases.
+Something to consider when building your milestone projects, is to only use fake or temporary
+data during the development stages.
+Get your project working functionally first, and then, once you've got the app deployed
+on Heroku, you can start to work with the real data on your Heroku database.
+Just remember that these are completely separate databases, which we will see in a moment once
+the app is fully deployed.
+Back within our Heroku config vars, we need to add the other variables that are currently
+saved within our env.py file.
+The only two that we do not want to include are the "DEVELOPMENT" and "DB_URL" variables.
+These two are intended purely for local development within the IDE, and should not be used on Heroku.
+Also, remember not to include the "quotes" for the keys or values, just the context within the quotes.
+In total, we should have the following variables within Heroku:
+DATABASE_URL, which is set by default once we've included the Postgres database on our app.
+IP, set to 0.0.0.0.
+PORT, set to 5000.
+SECRET_KEY, which can be any random secret key of your choice.
+Then finally, DEBUG, set temporarily to True, but make sure to set this to False prior to
+submitting any milestone projects for assessment.
+The only reason we want DEBUG to be True temporarily, is to check for any possible errors during setup and deployment.
+Since we have two database URLs, one locally and one for Heroku, we actually need to add
+one more thing to our initialization file.
+Let's go back to our workspace, and open the "__init__.py" file.
+As you can see, the app is currently configured to look for the local database, so we can
+add a conditional check for Heroku's Postgres database.
+If the "DEVELOPMENT" environment variable is set to True, then we are working with our local database.
+Otherwise, since we didn't set that variable on Heroku, then it should use Heroku's "DATABASE_URL" instead.
+Let's commit and push these changes to GitHub, and then go back to the Heroku app.
+From within the "Deploy" tab, we have a couple options to choose from.
+We can either deploy the app using the Heroku CLI in our Terminal using the steps below,
+or, to keep things simple, we will deploy directly from our GitHub repository.
+Make sure your own GitHub profile is displayed, then add your repository name and click Search.
+If successfully found, you can now click "Connect" which will link your app to the repository.
+On this project, we were pushing all changes to the main or master branch, so now we can
+select "Enable Automatic Deploys", followed by "Deploy Branch".
+Heroku will start the build process now, which has identified Python from our Procfile, and
+will now install the packages from our requirements.txt file.
+This can take a few minutes for the app to fully build, but once it's done, you should
+see the message, "Your app was successfully deployed".
+However, there are still two final steps that we need to do in order for our new Postgres Database to work properly.
+First, go back to the Settings tab, and reveal Config Vars.
+Heroku can sometimes cause the DATABASE_URL to have an invalid path to the Postgres database.
+If your DATABASE_URL starts with ‘postgres’ instead of ‘postgresql’, then we need
+to add one extra bit of code to the __init__.py file, since we cannot edit this variable.
+Open the init file, and import re which is the Regular Expression package for Python.
+Then, within the else statement for our Heroku setup, we need to create a new variable called
+‘uri’, which will grab the environment variable from Heroku.
+If the uri starts with postgres://, then we need to update the uri variable and replace
+that with itself, but this time making sure to include “ql” so it reads postgresql.
+Now, we just simply replace the original value, with our new ‘uri’ variable.
+Go ahead and add those changes, commit them, and then push to GitHub.
+After we can see the updates being made on Heroku’s Activity tab, and the build is
+complete, the final step we need to perform is to create our tables on the database.
+Scroll to the top, and click the "More" dropdown button, then select "Run console".
+In the same way that we connected our local database at the beginning, we need to do the same within Heroku now.
+"python3" to access the Python interpreter.
+from taskmanager import db db.create_all()
+Our Heroku database should now have the tables and columns created from our models.py file,
+so we can exit() this console.
+Remember, if you make any changes to your models anytime during development once deployed
+to Heroku, you will need to make these migrations once again in this Heroku console.
+Everything should be linked up properly now, so we can finally click on the "Open App" button.
+Wonderful, the deployed site is now available, and should automatically update whenever we
+push changes to our GitHub repository.
+As you can see, there are no tasks or categories on our site, because this is a brand new database,
+and all of the original items are only stored within our local database.
+We would need to add new categories and tasks on this database, since the others will not have been transferred over.
+It's highly recommended to deploy your application early, such as the very beginning of your
+project initiation, and not leave it until the last minute.
+Leaving Heroku deployment until the last minute can cause unwanted stress, and you can possibly run into unwanted errors.
+Congratulations!
+This concludes the entire Task Manager mini-project.
+Together, we've learned how to set up a Flask project using SQLAlchemy's ORM with our own custom database schema.
+We also covered full CRUD functionality for both of our models: Task and Category.
+Finally, we've seen how to set up automatic deployment from GitHub to Heroku, so any future
+changes we make will sync automatically to our deployed site.
