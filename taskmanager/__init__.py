@@ -15,14 +15,16 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 if os.environ.get("DEVELOPMENT") == "True":
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL") # local
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")  # local
 else:
     uri = os.environ.get("DATABASE_URL")
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
-    app.config["SQLALCHEMY_DATABASE_URI"] = uri # heroku
+    app.config["SQLALCHEMY_DATABASE_URI"] = uri  # heroku
 
 db = SQLAlchemy(app)
+
+from taskmanager import routes  # noqa
 
 # the computer will complain this is not being imported at the top of the page
 # with the other imports.  It is here because the route file will rel on using
