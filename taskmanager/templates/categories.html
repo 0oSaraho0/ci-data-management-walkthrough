@@ -3,11 +3,6 @@
 
 <h3 class="light-blue-text text-darken-4 center-align">Categories</h3>
 
-<!--Here we are starting by making a button to like the pages togehter This will take us to the form 
-add a new category.  To make it responsive we use the materialize grid which has a culumn that spans
-12 spaces and is center aligned  within the link we add a button with the materalize button large class
-which is larger than deafult.  the link is add category with an icon the link has the url for with double 
-curly braces becasue it is a local file-->
 <div class="row">
     <div class="col s12 center-align">
         <a href="{{ url_for('add_category') }}" class="btn-large light-blue darken-2"> 
@@ -16,47 +11,6 @@ curly braces becasue it is a local file-->
 
     </div>
 </div>
-<!--Eventually, we are going to have more than one category listed here, but so far we've
-only added the single category of 'Travel'.
-However, let's prepare the code to recognize multiple cards, by using the Jinja syntax of a for-loop.
-We don't want each card to stack on top of each other, but instead, to flow within the
-same row, each having their own column.
-Make sure to add the for-loop just inside of the row, so everything within the row is repeated and looped.
-The closing  endfor  should be just after the div for this column, so follow that down,
-and add the closing element there.
-Similar to JavaScript, we need to define a new index for each iteration of this loop,
-so to keep things consistent, we will call ours 'category'.
-This means that for each 'category' in the ‘list of categories' being passed over from
-our Python function, it will generate a new column and card.
-Finally, we need to display the actual category name that's stored within our database, so
-we can update the card-title.
-Since we are within a for-loop, we need to use the newly defined index variable of 'category'.
-We also need to use dot-notation and tell it which key should be printed here, so in
-this case, it should be 'category.category_name', which means, “this category’s key of category_name”.
-If you wanted to show the primary key instead, that's stored within our database as 'id',
-so it would be 'category.id' for example.
-That's all there is to it,  got to routes.py-->
-
-<!--
-However, we need some sort of mechanism for the app to know which specific category we intend to update.
-In order to understand this, let's open the template for all categories, which contains
-the for-loop we built in the last video.
-If you recall, within this for-loop, we have the variable of 'category' that is used for
-each iteration of this loop, and we have targeted the 'category_name' field.
-Due to the fact that our 'Edit' and 'Delete' buttons are still within the for-loop, we
-can use that variable to identify the specific category primary key using '.id'.
-Let's go ahead and create the href url_for() method, which will be wrapped in double curly-brackets.
-This behaves in the same way that we called the navbar links, or the CSS and JavaScript
-files from within our static directory.In addition to calling our new 'edit_category' function, we need to pass another argument
-to specify which particular category we are attempting to update.
-Make sure you add a comma after the single-quotes, which identifies that we are calling the function with some data included.
-For the argument name, it can be whatever we'd like, and since we need to use something
-unique, it's best to use the primary key of the ID.
-I'm going to call this 'category id', and we can now set that equal to the current 'category.id' using dot-notation again.
-Since we originally added the 'Travel' category as the first record on our database, its ID will be '1'.
-Now, we can head back over to the routes.py file, and since we've given an argument of
-'category_id' when clicking the 'Edit' button, this also needs to appear in our app.route.
--->
 
 <div class="row">
     {% for category in categories %}
@@ -67,7 +21,7 @@ Now, we can head back over to the routes.py file, and since we've given an argum
             </div>
             <div class="card-action">
             <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn green accent-4">Edit</a>
-            <a href="#" class="btn red">Delete</a>
+            <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn red">Delete</a>
             </div>
         </div>
     </div>
